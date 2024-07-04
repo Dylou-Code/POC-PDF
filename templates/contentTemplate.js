@@ -1,64 +1,73 @@
+// const fs = require("fs");
+// function imageToBase64(filePath) {
+//     if (!filePath) {
+//       console.error("image undefined");
+//       return ""; 
+//     }
+//     const image = fs.readFileSync(filePath);
+//     return `data:image/jpeg;base64,${image.toString("base64")}`;
+//   }
+  
 
 function generateColumns(contentData, pageHeight) {
-    const maxColumns = 4;
-    const columnGap = 10;
-    // tailole contenu à calvculer avec le header et footer 
-    const contentHeight = pageHeight ;
+  const maxColumns = 4;
+  const columnGap = 10;
+  // tailole contenu à calvculer avec le header et footer
+  const contentHeight = pageHeight;
 
-    let columns = [];
-    // tableau pour les colonne qui seronbt ensuite distribvuer dans les pages
-    let currentColumn = [];
-    let currentHeight = 0;
-    // page dans un tableau
-    const pages = [];
+  let columns = [];
+  // tableau pour les colonne qui seront ensuite distribvuer dans les pages
+  let currentColumn = [];
+  let currentHeight = 0;
+  // page dans un tableau
+  const pages = [];
 
-    contentData.forEach((item, index) => {
-        const itemHeight = 100; // Hauteur d'un item en fixe 
+  contentData.forEach((item, index) => {
+    const itemHeight = 100; // Hauteur d'un item en fixe
 
-        //si la hauteur de mes element sont sont
-        // checker la hauteur de l'element rajouté
-        if (currentHeight + itemHeight > contentHeight) {
-            //j'ajoute la colonne  
-            columns.push({ stack: currentColumn, width: '25%' }); 
+    //si la hauteur de mes element sont sont
+    // checker la hauteur de l'element rajouté
+    if (currentHeight + itemHeight > contentHeight) {
+      //j'ajoute la colonne
+      columns.push({ stack: currentColumn, width: "25%" });
 
-            currentColumn = []; // Réinitialise le tableau de la colonne actuelle
-            currentHeight = 0; // Réinitialise la hauteur de la colonne actuelle
+      currentColumn = []; // Réinitialise le tableau de la colonne actuelle
+      currentHeight = 0; // Réinitialise la hauteur de la colonne actuelle
 
-            // Vérifie si le nombre de colonnes atteint le maximum autorisé
-            if (columns.length === maxColumns) {
-                pages.push({ columns: columns, columnGap: columnGap }); // Ajoute les colonnes à une nouvelle page
-                columns = []; // Réinitialise le tableau des colonnes pour la prochaine page
-            }
-        }
-
-        //titre et description
-        currentColumn.push({ text: item.title, style: 'header'});
-        currentColumn.push(item.description);
-
-        // Incrémente la hauteur actuelle de la colonne avec la hauteur de l'élément
-        currentHeight += itemHeight;
-    });
-
-    // Vérifie si la dernière colonne contient des éléments
-    if (currentColumn.length > 0) {
-        columns.push({ stack: currentColumn, width: '25%' }); // Ajoute la dernière colonne au tableau des colonnes
+      // Vérifie si le nombre de colonnes atteint le maximum autorisé
+      if (columns.length === maxColumns) {
+        pages.push({ columns: columns, columnGap: columnGap }); // Ajoute les colonnes à une nouvelle page
+        columns = []; // Réinitialise le tableau des colonnes pour la prochaine page
+      }
     }
 
-    // Vérifie si des colonnes ont été créées mais pas encore ajoutées à une page
-    if (columns.length > 0) {
-        pages.push({ columns: columns, columnGap: columnGap }); // Ajoute les colonnes restantes à une nouvelle page
-    }
+    //titre et description
+    currentColumn.push({ text: item.title, style: "header", image: item.image });
+    currentColumn.push(item.description);
 
-    return pages; 
+    // const imageBase64 = imageToBase64(item.image);
+
+    
+    // Incrémente la hauteur actuelle de la colonne avec la hauteur de l'élément
+    currentHeight += itemHeight;
+  });
+
+  // Vérifie si la dernière colonne contient des éléments
+  if (currentColumn.length > 0) {
+    columns.push({ stack: currentColumn, width: "25%" }); // Ajoute la dernière colonne au tableau des colonnes
+  }
+
+  // Vérifie si des colonnes ont été créées mais pas encore ajoutées à une page
+  if (columns.length > 0) {
+    pages.push({ columns: columns, columnGap: columnGap }); // Ajoute les colonnes restantes à une nouvelle page
+  }
+
+  return pages;
 }
 
 module.exports = generateColumns;
 
-
-
-
 // --------------------
-
 
 // module.exports = [
 //     { text: 'Bonjour, monde!', style: 'header' },
@@ -71,8 +80,9 @@ module.exports = generateColumns;
 //         columns: [
 //             // {
 //             //     width: '25%',
+
 //             //     stack: [
-//             //         { text: 'Elise Radio 88.3 FM', style: 'header' },
+//             //         { text: 'Elise Radio 88.3 FM', style: 'header', image: },
 //             //         'Elise radio : une radio française lancée en 2019 par Eric Feig...',
 //             //         { text: 'Sentier pédestre : à la découverte du village de la Vernaz', style: 'header' },
 //             //         'Une balade facile à faire seul, entre amis ou en famille pour les amoureux de la nature...',

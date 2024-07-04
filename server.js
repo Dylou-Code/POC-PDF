@@ -56,7 +56,8 @@ const contentData = [
   {
     title: "Explorez les merveilles du Parc National des Calanques",
     description:
-      "Découvrez la beauté préservée des calanques de Marseille à Cassis, idéal pour la randonnée et la baignade. ,"
+      "Découvrez la beauté préservée des calanques de Marseille à Cassis, idéal pour la randonnée et la baignade. ,",
+    image: "./public/images/cookies.jpg",
   },
   {
     title: "Guide complet pour visiter le Château de Versailles",
@@ -237,7 +238,7 @@ app.get("/generate-pdf", (req, res) => {
   const pageHeight = 595;
 
   // gestion du contenurrrr
-  const content = contentTemplate(contentData, pageHeight, 60,60);
+  const content = contentTemplate(contentData, pageHeight, 60, 60);
 
   // génération du pdf
   generatePdf(content, headerFooterTemplate, res, orientation);

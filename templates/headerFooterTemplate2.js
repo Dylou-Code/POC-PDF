@@ -3,14 +3,14 @@ module.exports = {
         return {
             text: `Header Template 2 - Page ${currentPage} of ${pageCount}`,
             alignment: 'left',
-            margin: [20, 20, 0, 0]
+            margin: [20, 20, 20, 20]
         };
     },
     footer: (currentPage, pageCount) => {
         return {
             text: `Footer Template 2 - Page ${currentPage} of ${pageCount}`,
             alignment: 'right',
-            margin: [0, 0, 20, 20]
+            margin: [20, 20, 20, 20]
         };
     }
 };
