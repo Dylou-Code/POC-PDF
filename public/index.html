@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generate PDF</title>
+  </head>
+  <body>
+    <div class="buttons">
+        <button class="button-4" role="button" onclick="generatePDF()"">Imprimer</button>
+    <button class="button-4" role="button" onclick="previewPDF()"">Aperçu</button>
+    </div>
+    
+    <style>
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .buttons {
+        display: flex;
+        gap: 10px;
+    }
+    .button-4 {
+        appearance: none;
+        background-color: #fafbfc;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
+          rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+        box-sizing: border-box;
+        color: #24292e;
+        cursor: pointer;
+        display: inline-block;
+        font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial,
+          sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        list-style: none;
+        padding: 6px 16px;
+        position: relative;
+        transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+        word-wrap: break-word;
+      }
+
+      .button-4:hover {
+        background-color: #f3f4f6;
+        text-decoration: none;
+        transition-duration: 0.1s;
+      }
+
+      .button-4:disabled {
+        background-color: #fafbfc;
+        border-color: rgba(27, 31, 35, 0.15);
+        color: #959da5;
+        cursor: default;
+      }
+
+      .button-4:active {
+        background-color: #edeff2;
+        box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+        transition: none 0s;
+      }
+
+      .button-4:focus {
+        outline: 1px transparent;
+      }
+
+      .button-4:before {
+        display: none;
+      }
+
+      .button-4:-webkit-details-marker {
+        display: none;
+      }
+    </style>
+    <script>
+      function generatePDF() {
+        // API endpoint for generating PDF
+        const apiEndpoint =
+          "http://localhost:3000/generate-pdf?&template=2";
+
+        fetch(apiEndpoint, {
+          method: "GET",
+        })
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = "output.pdf";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          })
+          .catch((error) => console.error("Error generating PDF:", error));
+      }
+
+      function previewPDF() {
+            const apiEndpoint = 'http://localhost:3000/generate-pdf?&template=1';
+
+            fetch(apiEndpoint, {
+                method: 'GET',
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const newWindow = window.open(url, '_blank');
+                if (newWindow) {
+                    newWindow.onload = function() {
+                        newWindow.print();
+                    };
+                } else {
+                    console.error('Failed to open new window for PDF preview.');
+                }
+            })
+            .catch(error => console.error('Error generating PDF:', error));
+        }
+    </script>
+  </body>
+</html>
