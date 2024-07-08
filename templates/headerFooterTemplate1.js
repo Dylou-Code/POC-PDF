@@ -17,17 +17,17 @@
 
 function header() {
     return {
-        text: 'Header Template 1',
+        text: 'Agenda ',
         alignment: 'center',
-        margin: [0, 0, 0, 0]
+        margin: [0, 0, 0, 0] 
     };
 }
 
 function footer(currentPage, pageCount) {
     return {
-        text: `Footer Template 1 - Page ${currentPage} of ${pageCount}`,
+        text: `Test -  Ouvert de 9h-12h30 et 14h30-18h -  Page ${currentPage} of ${pageCount}`,
         alignment: 'center',
-        margin: [0, 0, 0, 0]
+        margin: [0, 0, 0, 0] 
     };
 }
 

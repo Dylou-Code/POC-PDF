@@ -2,12 +2,11 @@
 // function imageToBase64(filePath) {
 //     if (!filePath) {
 //       console.error("image undefined");
-//       return ""; 
+//       return "";
 //     }
 //     const image = fs.readFileSync(filePath);
 //     return `data:image/jpeg;base64,${image.toString("base64")}`;
 //   }
-  
 
 function generateColumns(contentData, pageHeight) {
   const maxColumns = 4;
@@ -42,12 +41,11 @@ function generateColumns(contentData, pageHeight) {
     }
 
     //titre et description
-    currentColumn.push({ text: item.title, style: "header", image: item.image });
+    currentColumn.push({ text: item.title });
     currentColumn.push(item.description);
 
     // const imageBase64 = imageToBase64(item.image);
 
-    
     // Incrémente la hauteur actuelle de la colonne avec la hauteur de l'élément
     currentHeight += itemHeight;
   });
