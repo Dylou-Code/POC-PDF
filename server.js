@@ -237,8 +237,8 @@ app.get("/generate-pdf", (req, res) => {
   // page height for A4 | A4 49,6 x 70,2	595 x 842
   const pageHeight = 595;
 
-  // gestion du contenurrrr
-  const content = contentTemplate(contentData, pageHeight, 60, 60);
+  // gestion du contenu
+  const content = contentTemplate();
 
   // génération du pdf
   generatePdf(content, headerFooterTemplate, res, orientation);
