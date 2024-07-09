@@ -13,8 +13,8 @@
 
 function generateColumns() {
   const maxColumns = 4;
-  const pageHeight = 520; //Taille max hauteur page
-  const itemHeight = 40; //Taille item 
+  const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
+  const itemHeight = 40; // Taille item 
   const contentData = Array.from({ length: 70 }, (v, i) => ({
       title: `Titre ${i + 1}`,
       description: `Description ${i + 1}`
