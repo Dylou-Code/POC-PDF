@@ -9,73 +9,141 @@
 //   }
 
 
-// ----------Work V2
+
+const path = require("path");
 
 function generateColumns() {
   const maxColumns = 4;
-  const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
-  const itemHeight = 40; // Taille item 
+  const pageHeight = 555; // hauteur contenu reel disponible (théorique 475)
+  const headerFooterHeight = 60; // Hauteur totale de l'entête et pied de page
   const contentData = Array.from({ length: 70 }, (v, i) => ({
-      title: `Titre ${i + 1}`,
-      description: `Description ${i + 1}`
+    title: `Titre ${i + 1}`,
+    description: `Description ${i + 1}`,
+    image: i % 2 === 0 ? path.resolve(__dirname, '../public/images/cookies.jpg') : null,
   }));
 
   const pages = [];
   let currentPage = [];
   let currentColumn = [];
   let currentHeight = 0;
+  let currentItemIndex = 0;
 
-  contentData.forEach((item) => {
-      const itemContent = [
-          { text: item.title, style: 'header' },
-          item.description
-      ];
+  const addColumnToPage = () => {
+    if (currentColumn.length > 0) {
+      currentPage.push({ stack: currentColumn, width: "25%" });
+      currentColumn = [];
+      currentHeight = 0;
 
-      // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
-      if (currentHeight + itemHeight > pageHeight) {
-          // Ajoute la colonne à la page actuelle
-          currentPage.push({ stack: currentColumn, width: '25%' });
-          currentColumn = [];
-          currentHeight = 0;
-
-          // Si le nombre de colonnes atteint le maximum autorisé
-          if (currentPage.length === maxColumns) {
-              // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
-              pages.push({ columns: currentPage, columnGap: 10 });
-              currentPage = [];
-          }
+      if (currentPage.length === maxColumns) {
+        pages.push({ columns: currentPage, columnGap: 10 });
+        currentPage = [];
       }
+    }
+  };
 
-      // Ajoute l'élément à la colonne actuelle
-      currentColumn.push(...itemContent);
-      currentHeight += itemHeight;
+  contentData.forEach((item, index) => {
+    let itemHeight = 48; // Taille de base pour titre + description
+
+    if (item.image) {
+      itemHeight += 52; // Taille supplémentaire pour l'image
+    }
+
+    const itemContent = [
+      { text: item.title, style: "header", margin: [0, 0, 0, 5] },
+      item.description,
+    ];
+
+    if (item.image) {
+      itemContent.push({ image: item.image, width: 50, height: 32, margin: [0, 10, 0, 10] });
+    }
+
+    if (currentHeight + itemHeight > pageHeight) {
+      addColumnToPage();
+    }
+
+    currentColumn.push(...itemContent);
+    currentHeight += itemHeight;
+
+    currentItemIndex = index;
   });
 
+  addColumnToPage();
 
-  if (currentColumn.length > 0) {
-      currentPage.push({ stack: currentColumn, width: '25%' });
-  }
-
-  // Ajoute la dernière page si elle contient des colonnes
   if (currentPage.length > 0) {
-      pages.push({ columns: currentPage, columnGap: 10 });
+    pages.push({ columns: currentPage, columnGap: 10 });
   }
 
   return pages;
 }
 
+// Exemple d'utilisation de la fonction
+const content = generateColumns();
+console.log(content);
+
 module.exports = generateColumns;
 
+// ----------Work V2
+// 09/07/2024 à 11:00 image
+// function generateColumns() {
+//   const maxColumns = 4;
+//   const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
+//   const itemHeight = 150; // Taille item
+//   const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
+//   const contentData = Array.from({ length: 70 }, (v, i) => ({
+//     title: `Titre ${i + 1}`,
+//     description: `Description ${i + 1}`,
+    
+//     //image: "../public/images/cookies.jpg",
+//     image: imagePath,
+//   }));
+
+//   const pages = [];
+//   let currentPage = [];
+//   let currentColumn = [];
+//   let currentHeight = 0;
+
+//   contentData.forEach((item) => {
+//     const itemContent = [
+//       { text: item.title, style: "header", margin: [0, 0, 0, 10] },
+//       item.description,
+//       { image: item.image, width: 50, height: 32, margin: [0, 10, 0, 10] }
+//     ];
+
+//     // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
+//     if (currentHeight + itemHeight > pageHeight) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     }
+
+//     // Ajoute l'élément à la colonne actuelle
+//     currentColumn.push(...itemContent);
+//     currentHeight += itemHeight;
+//   });
+
+//   if (currentColumn.length > 0) {
+//     currentPage.push({ stack: currentColumn, width: "25%" });
+//   }
+
+//   // Ajoute la dernière page si elle contient des colonnes
+//   if (currentPage.length > 0) {
+//     pages.push({ columns: currentPage, columnGap: 10 });
+//   }
+
+//   return pages;
+// }
 
 
 
-
-
-
-
-
-
-
+// module.exports = generateColumns;
 
 // function generateColumns() {
 //   const maxColumns = 4;
@@ -127,9 +195,6 @@ module.exports = generateColumns;
 
 //   return pages;
 // }
-
-
-
 
 // -----WORKING CODE-----
 // function generateColumns(contentData, pageHeight) {
@@ -186,8 +251,6 @@ module.exports = generateColumns;
 
 //   return pages;
 // }
-
-
 
 // --------------------
 
