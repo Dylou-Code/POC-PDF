@@ -5,12 +5,12 @@ function generateColumns() {
     const maxColumns = 4;
     const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
     const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
-    const itemHeight = 80; // Taille item (titre + image + description + qr code)
+    const itemHeight = 65; // Taille item (titre + image + description + qr code)
     const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
     const contentData = Array.from({ length: 70 }, (v, i) => ({
-        title: `Titre ${i + 1}`,
-        description: `Description ${i + 1}`,
-        image: imagePath
+        title: `Plage du lac de Montriond ${i + 1}`,
+        description: `Le lac de Montriond se situe dans un cadre grandiose ${i + 1}`,
+        //image: imagePath
     }));
 
     const pages = [];
@@ -20,9 +20,10 @@ function generateColumns() {
 
     contentData.forEach((item) => {
         const itemContent = [
+            
             { text: item.title, style: "header", margin: [0, 0, 0, 5] }, // style header: 18, Marge bottom de 5
-            item.description,
-            { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
+            { text: item.description, margin: [0, 0, 0, 10] }, // style header: 18, Marge bottom de 5
+            //{ image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
            // { qr: 'text in QR', fit: 40 },
         ];
 

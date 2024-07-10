@@ -1,7 +1,7 @@
 const styles = {
     // Valeur en pt (Point)
     header: {
-        fontSize: 16,
+        fontSize: 12,
         bold: true
     },
     anotherStyle: {

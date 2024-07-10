@@ -10,7 +10,7 @@ const generatePdf = (content, headerFooterTemplate, res) => {
         pageOrientation: 'landscape', // ou 'landscape' pour paysage
         header: headerFooterTemplate.header,
         footer: headerFooterTemplate.footer,
-        pageMargins: [60, 60, 60, 60],
+        pageMargins: [40, 60, 40, 60],
     };
 
     // instance de pdfmake avec la polices
