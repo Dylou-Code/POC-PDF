@@ -5,7 +5,7 @@ function generateColumns() {
     const maxColumns = 4;
     const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
     const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
-    const itemHeight = 120; // Taille item (titre + image + description + qr code)
+    const itemHeight = 80; // Taille item (titre + image + description + qr code)
     const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
     const contentData = Array.from({ length: 70 }, (v, i) => ({
         title: `Titre ${i + 1}`,
