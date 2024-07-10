@@ -1,100 +1,87 @@
-// const fs = require("fs");
-// function imageToBase64(filePath) {
-//     if (!filePath) {
-//       console.error("image undefined");
-//       return "";
-//     }
-//     const image = fs.readFileSync(filePath);
-//     return `data:image/jpeg;base64,${image.toString("base64")}`;
-//   }
-
-
-
 const path = require("path");
 
+
 function generateColumns() {
-  const maxColumns = 4;
-  const pageHeight = 555; // hauteur contenu reel disponible (théorique 475)
-  const headerFooterHeight = 60; // Hauteur totale de l'entête et pied de page
-  const contentData = Array.from({ length: 70 }, (v, i) => ({
-    title: `Titre ${i + 1}`,
-    description: `Description ${i + 1}`,
-    image: i % 2 === 0 ? path.resolve(__dirname, '../public/images/cookies.jpg') : null,
-  }));
+    const maxColumns = 4;
+    const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
+    const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
+    const itemHeight = 120; // Taille item (titre + image + description + qr code)
+    const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
+    const contentData = Array.from({ length: 70 }, (v, i) => ({
+        title: `Titre ${i + 1}`,
+        description: `Description ${i + 1}`,
+        image: imagePath
+    }));
 
-  const pages = [];
-  let currentPage = [];
-  let currentColumn = [];
-  let currentHeight = 0;
-  let currentItemIndex = 0;
+    const pages = [];
+    let currentPage = [];
+    let currentColumn = [];
+    let currentHeight = 0;
 
-  const addColumnToPage = () => {
+    contentData.forEach((item) => {
+        const itemContent = [
+            { text: item.title, style: "header", margin: [0, 0, 0, 5] }, // style header: 18, Marge bottom de 5
+            item.description,
+            { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
+           // { qr: 'text in QR', fit: 40 },
+        ];
+
+        // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
+        if (currentHeight + itemHeight > pageHeight) {
+            // Ajoute la colonne à la page actuelle
+            currentPage.push({ stack: currentColumn, width: "25%" });
+            currentColumn = [];
+            currentHeight = 0;
+
+            // Si le nombre de colonnes atteint le maximum autorisé
+            if (currentPage.length === maxColumns) {
+                // Ajoute de l'espace vide pour que la dernière colonne atteigne 475 de hauteur
+                const remainingHeight = lastColumnHeight - currentHeight;
+                if (remainingHeight > 0) {
+                    currentPage[maxColumns - 1].stack.push({ text: '', margin: [0, remainingHeight, 0, 0] });
+                }
+
+                // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+                pages.push({ columns: currentPage, columnGap: 10 });
+                currentPage = [];
+            }
+        }
+
+        // Ajoute l'élément à la colonne actuelle
+        currentColumn.push(...itemContent);
+        currentHeight += itemHeight;
+    });
+
     if (currentColumn.length > 0) {
-      currentPage.push({ stack: currentColumn, width: "25%" });
-      currentColumn = [];
-      currentHeight = 0;
+        currentPage.push({ stack: currentColumn, width: "25%" });
+    }
 
-      if (currentPage.length === maxColumns) {
+    // Ajoute la dernière page si elle contient des colonnes
+    if (currentPage.length > 0) {
+        // Ajoute de l'espace vide pour que la dernière colonne atteigne 475 de hauteur
+        const remainingHeight = lastColumnHeight - currentHeight;
+        if (remainingHeight > 0 && currentPage.length === maxColumns) {
+            currentPage[maxColumns - 1].stack.push({ text: '', margin: [0, remainingHeight, 0, 0] });
+        }
         pages.push({ columns: currentPage, columnGap: 10 });
-        currentPage = [];
-      }
-    }
-  };
-
-  contentData.forEach((item, index) => {
-    let itemHeight = 48; // Taille de base pour titre + description
-
-    if (item.image) {
-      itemHeight += 52; // Taille supplémentaire pour l'image
     }
 
-    const itemContent = [
-      { text: item.title, style: "header", margin: [0, 0, 0, 5] },
-      item.description,
-    ];
-
-    if (item.image) {
-      itemContent.push({ image: item.image, width: 50, height: 32, margin: [0, 10, 0, 10] });
-    }
-
-    if (currentHeight + itemHeight > pageHeight) {
-      addColumnToPage();
-    }
-
-    currentColumn.push(...itemContent);
-    currentHeight += itemHeight;
-
-    currentItemIndex = index;
-  });
-
-  addColumnToPage();
-
-  if (currentPage.length > 0) {
-    pages.push({ columns: currentPage, columnGap: 10 });
-  }
-
-  return pages;
+    return pages;
 }
 
-// Exemple d'utilisation de la fonction
-const content = generateColumns();
-console.log(content);
+// module.exports = generateColumns;
 
-module.exports = generateColumns;
 
-// ----------Work V2
-// 09/07/2024 à 11:00 image
 // function generateColumns() {
 //   const maxColumns = 4;
 //   const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
-//   const itemHeight = 150; // Taille item
+//   const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
+//   const itemHeight = 80; // Taille item
 //   const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
 //   const contentData = Array.from({ length: 70 }, (v, i) => ({
 //     title: `Titre ${i + 1}`,
 //     description: `Description ${i + 1}`,
-    
-//     //image: "../public/images/cookies.jpg",
-//     image: imagePath,
+//     image: imagePath
 //   }));
 
 //   const pages = [];
@@ -102,17 +89,17 @@ module.exports = generateColumns;
 //   let currentColumn = [];
 //   let currentHeight = 0;
 
-//   contentData.forEach((item) => {
+//   contentData.forEach((item, index) => {
 //     const itemContent = [
-//       { text: item.title, style: "header", margin: [0, 0, 0, 10] },
+//       { text: item.title, style: "header", margin: [0, 0, 0, 5] },
 //       item.description,
-//       { image: item.image, width: 50, height: 32, margin: [0, 10, 0, 10] }
+//       { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] }
 //     ];
 
 //     // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
 //     if (currentHeight + itemHeight > pageHeight) {
 //       // Ajoute la colonne à la page actuelle
-//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentPage.push({ stack: currentColumn, width: "25%", fillColor: 'gray' });
 //       currentColumn = [];
 //       currentHeight = 0;
 
@@ -127,13 +114,148 @@ module.exports = generateColumns;
 //     // Ajoute l'élément à la colonne actuelle
 //     currentColumn.push(...itemContent);
 //     currentHeight += itemHeight;
+
+//     // Vérifie si c'est le dernier élément de contentData
+//     if (index === contentData.length - 1 && currentColumn.length > 0) {
+//       currentPage.push({ stack: currentColumn, width: "25%", fillColor: 'gray' });
+//       currentColumn = [];
+//     }
 //   });
 
-//   if (currentColumn.length > 0) {
-//     currentPage.push({ stack: currentColumn, width: "25%" });
+//   // Ajoute un espace vide à la dernière colonne pour atteindre la hauteur fixe
+//   if (currentPage.length > 0) {
+//     currentPage.forEach((column, idx) => {
+//       const remainingHeight = lastColumnHeight - (currentHeight > 0 ? currentHeight : itemHeight);
+//       if (idx === currentPage.length - 1 && remainingHeight > 0) {
+//         column.stack.push({ text: '', margin: [0, remainingHeight, 0, 0] });
+//       }
+//     });
+//     pages.push({ columns: currentPage, columnGap: 10 });
 //   }
 
-//   // Ajoute la dernière page si elle contient des colonnes
+//   return pages;
+// }
+
+module.exports = generateColumns;
+
+
+// ----------Work V2 ------------
+// function generateColumns() {
+//     const maxColumns = 4
+//     const pageHeight = 520 // hauteur contenu reel disponible (théorique 475)
+//     const lastColumns = 475
+//     const itemHeight = 80 // Taille item
+//     const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
+//     const contentData = Array.from({ length: 70 }, (v, i) => ({
+//       title: `Titre ${i + 1}`,
+//       description: `Description ${i + 1}`,
+//        image: imagePath
+//     }));
+  
+//     const pages = []
+//     let currentPage = []
+//     let currentColumn = []
+//     let currentHeight = 0
+  
+//     contentData.forEach((item) => {
+//       const itemContent = [
+//         { text: item.title, style: "header", margin: [0, 0, 0, 5] }, //  style header: 18,  Marge bottom de 5
+//         item.description,
+//         { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] }
+//       ];
+  
+//       // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
+//       if (currentHeight + itemHeight > pageHeight) {
+//         // Ajoute la colonne à la page actuelle
+//         currentPage.push({ stack: currentColumn, width: "25%" })
+//         currentColumn = []
+//         currentHeight = 0
+  
+//         // Si le nombre de colonnes atteint le maximum autorisé
+//         if (currentPage.length === maxColumns) {
+//           // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+//           pages.push({ columns: currentPage, columnGap: 10 })
+//           currentPage = [];
+//         }
+//       }
+  
+//       // Ajoute l'élément à la colonne actuelle
+//       currentColumn.push(...itemContent);
+//       currentHeight += itemHeight;
+//     });
+  
+//     if (currentColumn.length > 0) {
+//       currentPage.push({ stack: currentColumn, width: "25%" })
+//     }
+  
+//     // Ajoute la dernière page si elle contient des colonnes
+//     if (currentPage.length > 0) {
+//       pages.push({ columns: currentPage, columnGap: 10 })
+//     }
+  
+//     return pages
+//   }
+  // module.exports = generateColumns
+
+
+
+// function generateColumns() {
+//   const maxColumns = 4;
+//   const pageHeight = 555; // hauteur contenu reel disponible (théorique 475)
+//   const headerFooterHeight = 60; // Hauteur totale de l'entête et pied de page
+//   const contentData = Array.from({ length: 70 }, (v, i) => ({
+//     title: `Titre ${i + 1}`,
+//     description: `Description ${i + 1}`,
+//     image: i % 2 === 0 ? path.resolve(__dirname, '../public/images/cookies.jpg') : null,
+//   }));
+
+//   const pages = [];
+//   let currentPage = [];
+//   let currentColumn = [];
+//   let currentHeight = 0;
+//   let currentItemIndex = 0;
+
+//   const addColumnToPage = () => {
+//     if (currentColumn.length > 0) {
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       if (currentPage.length === maxColumns) {
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     }
+//   };
+
+//   contentData.forEach((item, index) => {
+//     let itemHeight = 48; // Taille de base pour titre + description
+
+//     if (item.image) {
+//       itemHeight += 52; // Taille supplémentaire pour l'image
+//     }
+
+//     const itemContent = [
+//       { text: item.title, style: "header", margin: [0, 0, 0, 5] },
+//       item.description,
+//     ];
+
+//     if (item.image) {
+//       itemContent.push({ image: item.image, width: 50, height: 32, margin: [0, 10, 0, 10] });
+//     }
+
+//     if (currentHeight + itemHeight > pageHeight) {
+//       addColumnToPage();
+//     }
+
+//     currentColumn.push(...itemContent);
+//     currentHeight += itemHeight;
+
+//     currentItemIndex = index;
+//   });
+
+//   addColumnToPage();
+
 //   if (currentPage.length > 0) {
 //     pages.push({ columns: currentPage, columnGap: 10 });
 //   }
@@ -141,62 +263,80 @@ module.exports = generateColumns;
 //   return pages;
 // }
 
+// function generateColumns(numberOfColumns) {
+//     const maxColumns = Math.min(numberOfColumns, 4); // Limite le nombre de colonnes à 4
+//     const pageHeight = 595  // Hauteur de la page avec les marges déduites
+//     const pageWidth = 842 - 60 * 2; // Largeur de la page avec les marges déduites
+//     const columnWidth = pageWidth / maxColumns; // Largeur de chaque colonne
+//     const itemHeight = 148; // Taille de base pour chaque item
+//     const contentData = Array.from({ length: 140 }, (v, i) => ({
+//       title: `Titre ${i + 1}`,
+//       description: `Description ${i + 1}`,
+//     }));
+  
+//     const pages = [];
+//     let currentPage = [];
+//     let currentColumn = [];
+//     let currentHeight = 0;
+  
+//     const addColumnToPage = () => {
+//       if (currentColumn.length > 0) {
+//         currentPage.push({
+//           stack: currentColumn,
+//           width: "25%",
+//           height: 300, // Hauteur de la colonne
+//         });
+//         currentColumn = [];
+//         currentHeight = 0;
+  
+//         if (currentPage.length === maxColumns) {
+//           pages.push({ columns: currentPage, columnGap: 10 });
+//           currentPage = [];
+//         }
+//       }
+//     };
+  
+//     contentData.forEach((item, index) => {
+//       const itemContent = [
+//         { text: item.title, style: "header", margin: [0, 0, 0, 5] },
+//         item.description,
+//       ];
+  
+//       if (currentHeight + itemHeight > pageHeight) {
+//         addColumnToPage();
+//       }
+  
+//       currentColumn.push(...itemContent);
+//       currentHeight += itemHeight;
+//     });
+  
+//     addColumnToPage();
+  
+//     if (currentPage.length > 0) {
+//       pages.push({ columns: currentPage, columnGap: 10 });
+//     }
+  
+//     return pages;
+//   }
+  
+//   // Exemple d'utilisation de la fonction
+//   const content = generateColumns(9); // Nombre de colonnes ajustable ici
+//   console.log(content);
+  
+//   module.exports = generateColumns;
 
+// Exemple d'utilisation de la fonction
+// const content = generateColumns();
+// console.log(content);
 
 // module.exports = generateColumns;
 
-// function generateColumns() {
-//   const maxColumns = 4;
-//   const columnGap = 10;
-//   const pageHeight = 460; // Hauteur maximale de contenu pour chaque colonne
-//   const contentData = Array.from({ length: 70 }, (v, i) => ({
-//       title: `Titre ${i + 1}`,
-//       description: `Description ${i + 1}`
-//   }));
 
-//   let columns = [];
-//   let currentColumn = [];
-//   let currentHeight = 0;
-//   const pages = [];
 
-//   contentData.forEach((item) => {
-//       const itemHeight = 40; // Hauteur approximative d'un item (à ajuster selon le style réel)
 
-//       // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
-//       if (currentHeight + itemHeight > pageHeight) {
-//           columns.push({ stack: currentColumn, width: "25%" });
-//           currentColumn = [];
-//           currentHeight = 0;
 
-//           // Si le nombre de colonnes atteint le maximum autorisé, ajouter à la page et réinitialiser les colonnes
-//           if (columns.length === maxColumns) {
-//               pages.push({ columns: columns, columnGap: columnGap });
-//               columns = [];
-//           }
-//       }
 
-//       // Ajouter titre et description à la colonne actuelle
-//       currentColumn.push({ text: item.title, style: "header" });
-//       currentColumn.push(item.description);
-
-//       // Incrémente la hauteur actuelle de la colonne
-//       currentHeight += itemHeight;
-//   });
-
-//   // Ajouter la dernière colonne si elle contient des éléments
-//   if (currentColumn.length > 0) {
-//       columns.push({ stack: currentColumn, width: "25%" });
-//   }
-
-//   // Ajouter les colonnes restantes à la dernière page
-//   if (columns.length > 0) {
-//       pages.push({ columns: columns, columnGap: columnGap });
-//   }
-
-//   return pages;
-// }
-
-// -----WORKING CODE-----
+// -----WORKING CODE V1-----
 // function generateColumns(contentData, pageHeight) {
 //   const maxColumns = 4;
 //   const columnGap = 10;
@@ -252,7 +392,7 @@ module.exports = generateColumns;
 //   return pages;
 // }
 
-// --------------------
+// -------------------- PREMIER ESSAI --------------------
 
 // module.exports = [
 //     { text: 'Bonjour, monde!', style: 'header' },
