@@ -4,10 +4,6 @@ const styles = {
         fontSize: 12,
         bold: true
     },
-    anotherStyle: {
-        italics: true,
-        alignment: 'right'
-    }
 };
 
 module.exports = styles;

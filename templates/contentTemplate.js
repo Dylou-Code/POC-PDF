@@ -1,10 +1,21 @@
 const path = require("path");
 
+/**
+ * 
+ * @returns {Array} - Tableau de pages contenant les colonnes
+ */
+
 function generateColumns() {
   const maxColumns = 4;
   const pageHeight = 520; // hauteur contenu reel disponible
   const itemHeight = 65; // Taille item (titre + description)
-  const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
+  // ajout de l'image (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
+  const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg"); 
+  // ajout d'un svg (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
+  const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="169" height="10" fill="#EEF1F5"/>
+  </svg>`;
+
   const contentData = Array.from({ length: 96 }, (v, i) => ({
     title: `Plage du lac de Montriond ${i + 1}`,
     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
@@ -20,8 +31,8 @@ function generateColumns() {
 
   contentData.forEach((item, index) => {
     const itemContent = [
-      { text: item.title, margin: [0, 0, 0, 5], fontSize: 10, bold: true },
-      { text: item.description, margin: [0, 0, 0, 10], fontSize: 8 },
+      { text: item.title, margin: [0, 0, 0, 5], fontSize: 10, bold: true,  },
+      { text: item.description, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
 
@@ -38,17 +49,21 @@ function generateColumns() {
         currentPage[maxColumns - 1].stack.push({
           columns: [
             {
+              width: "auto",
               qr: "Text for QR code",
-              fit: 50,
+              fit: 40,
               margin: [0, 0, 0, 5],
             },
             {
-              text: "Retrouvez l'agenda complet en ligne",
-              alignment: "left",
-              margin: [0,0, 0, 0],
-              fontSize: 8,
+              width: "*",
+              text: {
+                text: "Retrouvez l'agenda complet\n en ligne",
+                bold: true,
+                fontSize: 8,
+              },
             },
           ],
+          columnGap: 5,
         });
 
         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
@@ -86,146 +101,13 @@ function generateColumns() {
     }
     pages.push({ columns: currentPage, columnGap: 10 });
   }
+  console.log(pages)
 
   return pages;
 }
 
-// function generateColumns() {
-//     const maxColumns = 4;
-//     const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
-//     const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
-//     const itemHeight = 65; // Taille item (titre + image + description + qr code)
-//     const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
-//     const contentData = Array.from({ length: 96 }, (v, i) => ({
-//         title: `Plage du lac de Montriond ${i + 1}`,
-//         description: `Le lac de Montriond se situe dans un cadre grandiose ${i + 1}`,
-//         //image: imagePath
-//     }));
-
-//     const pages = [];
-//     let currentPage = [];
-//     let currentColumn = [];
-//     let currentHeight = 0;
-
-//     contentData.forEach((item) => {
-//         const itemContent = [
-
-//             { text: item.title, style: "header", margin: [0, 0, 0, 5] }, // style header: 18, Marge bottom de 5
-//             { text: item.description, margin: [0, 0, 0, 10] }, // style header: 18, Marge bottom de 5
-//             //{ image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
-//            // { qr: 'text in QR', fit: 40 },
-//         ];
-
-//         // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
-//         if (currentHeight + itemHeight > pageHeight) {
-//             // Ajoute la colonne à la page actuelle
-//             currentPage.push({ stack: currentColumn, width: "25%" });
-//             currentColumn = [];
-//             currentHeight = 0;
-
-//             // Si le nombre de colonnes atteint le maximum autorisé
-//             if (currentPage.length === maxColumns) {
-//                 // Ajoute de l'espace vide pour que la dernière colonne atteigne 475 de hauteur
-//                 const remainingHeight = lastColumnHeight - currentHeight;
-//                 if (remainingHeight > 0) {
-//                     currentPage[maxColumns - 1].stack.push({ text: '', margin: [0, remainingHeight, 0, 0] });
-//                 }
-
-//                 // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
-//                 pages.push({ columns: currentPage, columnGap: 10 });
-//                 currentPage = [];
-//             }
-//         }
-
-//         // Ajoute l'élément à la colonne actuelle
-//         currentColumn.push(...itemContent);
-//         currentHeight += itemHeight;
-//     });
-
-//     if (currentColumn.length > 0) {
-//         currentPage.push({ stack: currentColumn, width: "25%" });
-//     }
-
-//     // Ajoute la dernière page si elle contient des colonnes
-//     if (currentPage.length > 0) {
-//         // Ajoute de l'espace vide pour que la dernière colonne atteigne 475 de hauteur
-//         const remainingHeight = lastColumnHeight - currentHeight;
-//         if (remainingHeight > 0 && currentPage.length === maxColumns) {
-//             currentPage[maxColumns - 1].stack.push({ text: 'PPP', margin: [0, remainingHeight, 0, 0] });
-//         }
-//         pages.push({ columns: currentPage, columnGap: 10 });
-//     }
-
-//     return pages;
-// }
-
-// module.exports = generateColumns;
-
-// function generateColumns() {
-//   const maxColumns = 4;
-//   const pageHeight = 520; // hauteur contenu reel disponible (théorique 475)
-//   const lastColumnHeight = 475; // Hauteur fixe de la dernière colonne
-//   const itemHeight = 80; // Taille item
-//   const imagePath = path.resolve(__dirname, '../public/images/cookies.jpg');
-//   const contentData = Array.from({ length: 70 }, (v, i) => ({
-//     title: `Titre ${i + 1}`,
-//     description: `Description ${i + 1}`,
-//     image: imagePath
-//   }));
-
-//   const pages = [];
-//   let currentPage = [];
-//   let currentColumn = [];
-//   let currentHeight = 0;
-
-//   contentData.forEach((item, index) => {
-//     const itemContent = [
-//       { text: item.title, style: "header", margin: [0, 0, 0, 5] },
-//       item.description,
-//       { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] }
-//     ];
-
-//     // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
-//     if (currentHeight + itemHeight > pageHeight) {
-//       // Ajoute la colonne à la page actuelle
-//       currentPage.push({ stack: currentColumn, width: "25%", fillColor: 'gray' });
-//       currentColumn = [];
-//       currentHeight = 0;
-
-//       // Si le nombre de colonnes atteint le maximum autorisé
-//       if (currentPage.length === maxColumns) {
-//         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
-//         pages.push({ columns: currentPage, columnGap: 10 });
-//         currentPage = [];
-//       }
-//     }
-
-//     // Ajoute l'élément à la colonne actuelle
-//     currentColumn.push(...itemContent);
-//     currentHeight += itemHeight;
-
-//     // Vérifie si c'est le dernier élément de contentData
-//     if (index === contentData.length - 1 && currentColumn.length > 0) {
-//       currentPage.push({ stack: currentColumn, width: "25%", fillColor: 'gray' });
-//       currentColumn = [];
-//     }
-//   });
-
-//   // Ajoute un espace vide à la dernière colonne pour atteindre la hauteur fixe
-//   if (currentPage.length > 0) {
-//     currentPage.forEach((column, idx) => {
-//       const remainingHeight = lastColumnHeight - (currentHeight > 0 ? currentHeight : itemHeight);
-//       if (idx === currentPage.length - 1 && remainingHeight > 0) {
-//         column.stack.push({ text: '', margin: [0, remainingHeight, 0, 0] });
-//       }
-//     });
-//     pages.push({ columns: currentPage, columnGap: 10 });
-//   }
-
-//   return pages;
-// }
-
 module.exports = generateColumns;
+
 
 // ----------Work V2 ------------
 // function generateColumns() {
