@@ -1,5 +1,4 @@
 
-
 const pdfmake = require('pdfmake');
 const fonts = require('./font');
 const styles = require('./pdfStyles');
