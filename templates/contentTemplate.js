@@ -1,26 +1,24 @@
 const path = require("path");
 
 /**
- * 
+ *
  * @returns {Array} - Tableau de pages contenant les colonnes
  */
 
+//const path = require("path");
+
 function generateColumns() {
   const maxColumns = 4;
-  const pageHeight = 520; // hauteur contenu reel disponible
-  const itemHeight = 65; // Taille item (titre + description)
-  // ajout de l'image (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
-  const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg"); 
-  // ajout d'un svg (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
-  const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="169" height="10" fill="#EEF1F5"/>
-  </svg>`;
+  const pageHeight = 490; // Hauteur contenu réel disponible
+  const qrCodeHeight = 50; // Hauteur du QR code
+  const qrCodeMargin = 10; // Marge pour le QR code
+  const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
+
+  const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
 
   const contentData = Array.from({ length: 96 }, (v, i) => ({
     title: `Plage du lac de Montriond ${i + 1}`,
-    description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
-      i + 1
-    }`,
+    description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${i + 1}`,
     // image: imagePath
   }));
 
@@ -29,15 +27,27 @@ function generateColumns() {
   let currentColumn = [];
   let currentHeight = 0;
 
+  const measureHeight = (item) => {
+    // Estimation basique de la hauteur en fonction du nombre de lignes de texte
+    const titleHeight = item.title ? 10 : 0; // hauteur pour le titre
+    const descriptionHeight = item.description ? Math.ceil(item.description.length / 50) * 8 : 0; // hauteur pour la description
+    const imageHeight = item.image ? 32 : 0; // hauteur pour l'image
+    return titleHeight + descriptionHeight + imageHeight + 20; // ajustement pour les marges
+  };
+
   contentData.forEach((item, index) => {
     const itemContent = [
-      { text: item.title, margin: [0, 0, 0, 5], fontSize: 10, bold: true,  },
+      { text: item.title, margin: [0, 0, 0, 2], fontSize: 10, bold: true },
       { text: item.description, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
 
-    // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
-    if (currentHeight + itemHeight > pageHeight) {
+    const itemHeight = measureHeight(item);
+
+    const isLastColumn = currentPage.length === maxColumns - 1;
+
+    // Vérifiez si l'élément peut être ajouté à la dernière colonne avec l'espace réservé pour le QR code
+    if (isLastColumn && currentHeight + itemHeight > pageHeight - reservedHeightForQrCode) {
       // Ajoute la colonne à la page actuelle
       currentPage.push({ stack: currentColumn, width: "25%" });
       currentColumn = [];
@@ -51,14 +61,14 @@ function generateColumns() {
             {
               width: "auto",
               qr: "Text for QR code",
-              fit: 40,
+              fit: 50,
               margin: [0, 0, 0, 5],
             },
             {
               width: "*",
               text: {
                 text: "Retrouvez l'agenda complet\n en ligne",
-                bold: true,
+                bold: false,
                 fontSize: 8,
               },
             },
@@ -67,6 +77,18 @@ function generateColumns() {
         });
 
         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+        pages.push({ columns: currentPage, columnGap: 10 });
+        currentPage = [];
+      }
+    } else if (!isLastColumn && currentHeight + itemHeight > pageHeight) {
+      // Ajoute la colonne à la page actuelle
+      currentPage.push({ stack: currentColumn, width: "25%" });
+      currentColumn = [];
+      currentHeight = 0;
+
+      // Si le nombre de colonnes atteint le maximum autorisé
+      if (currentPage.length === maxColumns) {
+        // Ajoute une nouvelle page
         pages.push({ columns: currentPage, columnGap: 10 });
         currentPage = [];
       }
@@ -83,7 +105,7 @@ function generateColumns() {
 
   // Ajoute la dernière page si elle contient des colonnes
   if (currentPage.length > 0) {
-    // Ajoute un QR code avec texte à la dernière colonne
+    // Ajoute un QR code avec texte à la dernière colonne si c'est la dernière colonne
     if (currentPage.length === maxColumns) {
       currentPage[maxColumns - 1].stack.push({
         columns: [
@@ -94,20 +116,279 @@ function generateColumns() {
           },
           {
             text: "Retrouvez l'agenda complet en ligne",
-            //margin: [2, 15, 0, 0]
+            fontSize: 8,
+            bold: true,
+            margin: [5, 0, 0, 0],
           },
         ],
       });
     }
     pages.push({ columns: currentPage, columnGap: 10 });
   }
-  console.log(pages)
 
   return pages;
 }
 
-module.exports = generateColumns;
 
+// function generateColumns() {
+//   const maxColumns = 4;
+//   const pageHeight = 490; // Hauteur contenu réel disponible
+//   const qrCodeHeight = 60; // Hauteur du QR code
+//   const qrCodeMargin = 10; // Marge pour le QR code
+//   const reservedHeightForQrCode = qrCodeHeight;
+
+//   const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
+//   const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+//   <rect width="169" height="10" fill="#EEF1F5"/>
+//   </svg>`;
+
+//   const contentData = Array.from({ length: 96 }, (v, i) => ({
+//     day: `Lundi 15 juillet | ${i + 1}`,
+//     title: `Plage du lac de Montriond ${i + 1}`,
+//     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
+//       i + 1
+//     }`,
+//     // image: imagePath
+//   }));
+
+//   const pages = [];
+//   let currentPage = [];
+//   let currentColumn = [];
+//   let currentHeight = 0;
+
+//   const measureHeight = (item) => {
+//     // Estimation basique de la hauteur en fonction du nombre de lignes de texte
+//     const dayHeight = 10;
+//     const decoTitleHeight = 10;
+//     const titleHeight = item.title ? 10 : 0;
+//     const descriptionHeight = item.description
+//       ? Math.ceil(item.description.length / 50) * 8
+//       : 0; // hauteur pour la description
+//     const imageHeight = item.image ? 32 : 0; // hauteur pour l'image
+//     return (
+//       titleHeight +
+//       descriptionHeight +
+//       imageHeight +
+//       dayHeight +
+//       decoTitleHeight +
+//       20
+//     ); // ajustement pour les marges
+//   };
+
+//   contentData.forEach((item, index) => {
+//     const itemContent = [
+//       // titre + decoration
+//       { svg: decoTitle, width: 65, height: 10, margin: [0, 0, 0, 0] },
+//       { text: item.day, margin: [0, -18, 0, 0], fontSize: 8, bold: true },
+//       { text: item.title, margin: [0, 0, 0, 2], fontSize: 10, bold: true },
+//       {
+//         text: item.description,
+//         margin: [0, 0, 0, 10],
+//         fontSize: 8,
+//         color: "#585f66",
+//       },
+//       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
+//     ];
+
+//     const itemHeight = measureHeight(item);
+
+//     const isLastColumn = currentPage.length === maxColumns - 1;
+
+//     // Vérifiez si l'élément peut être ajouté à la dernière colonne avec l'espace réservé pour le QR code
+//     if (
+//       isLastColumn &&
+//       currentHeight + itemHeight > pageHeight - reservedHeightForQrCode
+//     ) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute un QR code avec texte à la dernière colonne
+//         currentPage[maxColumns - 1].stack.push({
+//           columns: [
+//             {
+//               width: "auto",
+//               qr: "Text for QR code",
+//               fit: qrCodeHeight,
+//               margin: [0, 0, 0, 5],
+//             },
+//             {
+//               width: "*",
+//               text: {
+//                 text: "Retrouvez l'agenda complet\n en ligne",
+//                 bold: false,
+//                 fontSize: 8,
+//               },
+//               margin: [0, 10, 0, 0],
+//             },
+//           ],
+//           columnGap: 5,
+//         });
+
+//         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     } else if (!isLastColumn && currentHeight + itemHeight > pageHeight) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     }
+
+//     // Ajoute l'élément à la colonne actuelle
+//     currentColumn.push(...itemContent);
+//     currentHeight += itemHeight;
+//   });
+
+//   if (currentColumn.length > 0) {
+//     currentPage.push({ stack: currentColumn, width: "25%" });
+//   }
+
+//   // Ajoute la dernière page si elle contient des colonnes
+//   if (currentPage.length > 0) {
+//     // Ajoute un QR code avec texte à la dernière colonne si c'est la dernière colonne
+//     if (currentPage.length === maxColumns) {
+//       currentPage[maxColumns - 1].stack.push({
+//         columns: [
+//           {
+//             width: "auto",
+//             qr: "Text for QR code",
+//             fit: qrCodeHeight,
+//             margin: [0, 0, 0, 5],
+//           },
+//           {
+//             width: "*",
+//             text: {
+//               text: "Retrouvez l'agenda complet\n en ligne",
+//               bold: false,
+//               fontSize: 8,
+//               margin: [0, 10, 0, 0],
+//             },
+//           },
+//         ],
+//         columnGap: 5,
+//       });
+//     }
+//     pages.push({ columns: currentPage, columnGap: 10 });
+//   }
+
+//   return pages;
+// }
+
+// function generateColumns() {
+//   const maxColumns = 4;
+//   const pageHeight = 475; // hauteur contenu reel disponible
+//   const itemHeight = 65; // Taille item (titre + description)
+//   // ajout de l'image (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
+//   const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
+//   // ajout d'un svg (prendre en compte la taille de l'image dans le calcul de la hauteur de l'item)
+//   const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+//   <rect width="169" height="10" fill="#EEF1F5"/>
+//   </svg>`;
+
+//   const contentData = Array.from({ length: 96 }, (v, i) => ({
+//     title: `Plage du lac de Montriond ${i + 1}`,
+//     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
+//       i + 1
+//     }`,
+//     // image: imagePath
+//   }));
+
+//   const pages = [];
+//   let currentPage = [];
+//   let currentColumn = [];
+//   let currentHeight = 0;
+
+//   contentData.forEach((item, index) => {
+//     const itemContent = [
+//       { text: item.title, margin: [0, 0, 0, 2], fontSize: 10, bold: true,  },
+//       { text: item.description, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
+//       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
+//     ];
+
+//     // Si l'ajout de l'élément dépasse la hauteur de la colonne actuelle
+//     if (currentHeight + itemHeight > pageHeight) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute un QR code avec texte à la dernière colonne
+//         currentPage[maxColumns - 1].stack.push({
+//           columns: [
+//             {
+//               width: "auto",
+//               qr: "Text for QR code",
+//               fit: 40,
+//               margin: [0, 0, 0, 5],
+//             },
+//             {
+//               width: "*",
+//               text: {
+//                 text: "Retrouvez l'agenda complet\n en ligne",
+//                 bold: true,
+//                 fontSize: 8,
+//               },
+//             },
+//           ],
+//           columnGap: 5,
+//         });
+
+//         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     }
+
+//     // Ajoute l'élément à la colonne actuelle
+//     currentColumn.push(...itemContent);
+//     currentHeight += itemHeight;
+//     console.log('height', currentHeight)
+//   });
+
+//   if (currentColumn.length > 0) {
+//     currentPage.push({ stack: currentColumn, width: "25%" });
+//   }
+
+//   // Ajoute la dernière page si elle contient des colonnes
+//   if (currentPage.length > 0) {
+//     // Ajoute un QR code avec texte à la dernière colonne
+//     if (currentPage.length === maxColumns) {
+//       currentPage[maxColumns - 1].stack.push({
+//         columns: [
+//           {
+//             qr: "Text for QR code",
+//             fit: 50,
+//             margin: [0, 0, 0, 0],
+//           },
+//           {
+//             text: "Retrouvez l'agenda complet en ligne",
+//             //margin: [2, 15, 0, 0]
+//           },
+//         ],
+//       });
+//     }
+//     pages.push({ columns: currentPage, columnGap: 10 });
+//   }
+//   console.log(pages)
+
+//   return pages;
+// }
+
+module.exports = generateColumns;
 
 // ----------Work V2 ------------
 // function generateColumns() {
