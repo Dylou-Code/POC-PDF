@@ -15,10 +15,17 @@ function generateColumns() {
   const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
 
   const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
+  const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <rect width="169" height="10" fill="#EEF1F5"/>
+    </svg>`;
 
   const contentData = Array.from({ length: 96 }, (v, i) => ({
+    decoTitle: decoTitle,
+    day: `Lundi 15 juillet | ${i + 1}`,
     title: `Plage du lac de Montriond ${i + 1}`,
-    description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${i + 1}`,
+    description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
+      i + 1
+    }`,
     // image: imagePath
   }));
 
@@ -29,16 +36,41 @@ function generateColumns() {
 
   const measureHeight = (item) => {
     // Estimation basique de la hauteur en fonction du nombre de lignes de texte
+    const dayHeight = 8;
+    const decoTitleHeight = 20;
     const titleHeight = item.title ? 10 : 0; // hauteur pour le titre
-    const descriptionHeight = item.description ? Math.ceil(item.description.length / 50) * 8 : 0; // hauteur pour la description
+    const descriptionHeight = 24
     const imageHeight = item.image ? 32 : 0; // hauteur pour l'image
-    return titleHeight + descriptionHeight + imageHeight + 20; // ajustement pour les marges
+    return (
+      titleHeight +
+      descriptionHeight +
+      imageHeight +
+      dayHeight +
+      decoTitleHeight +
+      20
+    ); // ajustement pour les marges
   };
 
   contentData.forEach((item, index) => {
     const itemContent = [
-      { text: item.title, margin: [0, 0, 0, 2], fontSize: 10, bold: true },
-      { text: item.description, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
+      {
+        stack: [
+          {
+            svg: decoTitle,
+            width: 65,
+            height: 10,
+            margin: [0, 0, 0, 0],
+          },
+          { text: item.day, margin: [0, -13, 0, 0], fontSize: 8, bold: true },
+        ],
+      },
+      { text: item.title, margin: [0, 3, 0, 2], fontSize: 10, bold: true },
+      {
+        text: item.description,
+        margin: [0, 0, 0, 10],
+        fontSize: 8,
+        color: "#585f66",
+      },
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
 
@@ -47,7 +79,10 @@ function generateColumns() {
     const isLastColumn = currentPage.length === maxColumns - 1;
 
     // Vérifiez si l'élément peut être ajouté à la dernière colonne avec l'espace réservé pour le QR code
-    if (isLastColumn && currentHeight + itemHeight > pageHeight - reservedHeightForQrCode) {
+    if (
+      isLastColumn &&
+      currentHeight + itemHeight > pageHeight - reservedHeightForQrCode
+    ) {
       // Ajoute la colonne à la page actuelle
       currentPage.push({ stack: currentColumn, width: "25%" });
       currentColumn = [];
@@ -128,7 +163,6 @@ function generateColumns() {
 
   return pages;
 }
-
 
 // function generateColumns() {
 //   const maxColumns = 4;
