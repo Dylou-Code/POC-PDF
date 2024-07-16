@@ -13,6 +13,14 @@ function generateColumns() {
   const qrCodeHeight = 50; // Hauteur du QR code
   const qrCodeMargin = 10; // Marge pour le QR code
   const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
+  const phoneIcon = "\ue802";
+  const markerIcon = "\ue805";
+  const timeIcon = "\ue800";
+  const scheduleIcon = "\ue803";
+  const euroIcon = "\uf153";
+  const globeIcon = "\ue801";
+  const userIcon = "\ue804";
+  const iconTitle = "\ue803";
 
   const imagePath = path.resolve(__dirname, "../public/images/cookies.jpg");
   const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,6 +34,22 @@ function generateColumns() {
     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
       i + 1
     }`,
+    location: [
+      { text: markerIcon, font: 'Fontello', style: 'iconText' },
+      { text: ' Domaine de Découverte de la Vallée d\'Aulps', font: 'Roboto' }
+    ],
+    time: [
+      { text: scheduleIcon, font: 'Fontello', style: 'iconText' },
+      { text: ' 10h00 - 12h00', font: 'Roboto' }
+    ],
+    price: [
+      { text: euroIcon, font: 'Fontello', style: 'iconText' },
+      { text: ' Tarif unique : 10 €. Gratuit pour les moins de 10 ans.', font: 'Roboto' },
+    ],
+    website: [
+      { text: globeIcon, font: 'Fontello', style: 'iconText' },
+      { text: ' Reservation en ligne', font: 'Roboto'}
+    ],
     // image: imagePath
   }));
 
@@ -38,14 +62,24 @@ function generateColumns() {
     // Estimation basique de la hauteur en fonction du nombre de lignes de texte
     const dayHeight = 8;
     const decoTitleHeight = 20;
-    const titleHeight = item.title ? 8 : 0; 
-    const descriptionHeight = item.description ? Math.ceil(item.description.length / 50) * 8 : 0;
-    
+    const titleHeight = item.title ? 8 : 0;
+    const locationHeight = item.location ? 6 : 0;
+    const timeHeight = item.time ? 6 : 0;
+    const priceHeight = item.price ? 6 : 0;
+    const websiteHeight = item.price ? 6 : 0;
+    const descriptionHeight = item.description
+      ? Math.ceil(item.description.length / 50) * 8
+      : 0;
+
     return (
       titleHeight +
       descriptionHeight +
       dayHeight +
       decoTitleHeight +
+      locationHeight +
+      timeHeight +
+      priceHeight +
+      websiteHeight +
       20
     ); // ajustement pour les marges
   };
@@ -66,10 +100,15 @@ function generateColumns() {
       { text: item.title, margin: [0, 3, 0, 2], fontSize: 8, bold: true },
       {
         text: item.description,
-        margin: [0, 0, 0, 10],
+        margin: [0, 0, 0, 3],
         fontSize: 8,
         color: "#33383D",
       },
+      { text: item.location, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
+      { text: item.time, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
+      { text: item.price, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
+      { text: item.website, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
+      
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
 
@@ -102,7 +141,7 @@ function generateColumns() {
               fontSize: 8,
               bold: false,
               margin: [-40, 10, 5, 0],
-              italics: true
+              italics: true,
             },
           ],
         });
@@ -150,7 +189,7 @@ function generateColumns() {
             fontSize: 8,
             bold: false,
             margin: [-40, 10, 5, 0],
-            italics: true
+            italics: true,
           },
         ],
       });
@@ -160,6 +199,160 @@ function generateColumns() {
 
   return pages;
 }
+
+// ------------------ example with icon fontello ------------------
+// function generateColumns() {
+//   const maxColumns = 4;
+//   const pageHeight = 475; // Hauteur contenu réel disponible
+//   const qrCodeHeight = 50; // Hauteur du QR code
+//   const qrCodeMargin = 10; // Marge pour le QR code
+//   const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
+//   const phoneIcon = "\ue802";
+//   const euroIcon = "\uf153";
+
+//   const decoTitle = `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+//    <rect width="169" height="10" fill="#EEF1F5"/>
+//     </svg>`;
+
+//   const contentData = Array.from({ length: 96 }, (v, i) => ({
+//     decoTitle: decoTitle,
+//     day: [
+//       { text: phoneIcon, font: 'Fontello', style: 'iconText' },
+//       { text: ` LUNDI 15 JUILLET | ${i + 1}`, font: 'Roboto' }
+//     ],
+//     title: [
+//       { text: phoneIcon, font: 'Fontello', style: 'iconText' },
+//       { text: ` Plage du lac de Montriond ${i + 1}`, font: 'Roboto', margin: [0, 3, 0, 2], fontSize: 8, bold: true }
+//     ],
+//     description: [
+//       { text: euroIcon, font: 'Fontello', style: 'iconText' },
+//       { text: ` Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${i + 1}`, font: 'Roboto' }
+//     ],
+//   }));
+
+//   const pages = [];
+//   let currentPage = [];
+//   let currentColumn = [];
+//   let currentHeight = 0;
+
+//   const measureHeight = (item) => {
+//     // Estimation basique de la hauteur en fonction du nombre de lignes de texte
+//     const dayHeight = 8;
+//     const decoTitleHeight = 20;
+//     const titleHeight = item.title ? 8 : 0;
+//     const descriptionHeight = item.description
+//       ? Math.ceil(item.description.length / 50) * 8
+//       : 0;
+
+//     return titleHeight + descriptionHeight + dayHeight + decoTitleHeight + 20; // ajustement pour les marges
+//   };
+
+//   contentData.forEach((item, index) => {
+//     const itemContent = [
+//       {
+//         stack: [
+//           {
+//             svg: decoTitle,
+//             width: 65,
+//             height: 10,
+//             margin: [0, 0, 0, 0],
+//           },
+//           { text: item.day, margin: [0, 10, 0, 2] },
+//           { text: item.title, margin: [0, 3, 0, 2], fontSize: 8, bold: true },
+//           { text: item.description, margin: [0, 0, 0, 10], fontSize: 8, color: "#33383D" }
+//         ],
+//       },
+//     ];
+
+//     const itemHeight = measureHeight(item);
+
+//     const isLastColumn = currentPage.length === maxColumns - 1;
+
+//     // Vérifiez si l'élément peut être ajouté à la dernière colonne avec l'espace réservé pour le QR code
+//     if (
+//       isLastColumn &&
+//       currentHeight + itemHeight > pageHeight - reservedHeightForQrCode
+//     ) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute un QR code avec texte à la dernière colonne
+//         currentPage[maxColumns - 1].stack.push({
+//           columns: [
+//             {
+//               qr: "Text for QR code",
+//               fit: 50,
+//               margin: [0, 0, 0, 10],
+//             },
+//             {
+//               text: "Retrouvez l'agenda complet en ligne",
+//               fontSize: 8,
+//               bold: false,
+//               margin: [-40, 10, 5, 0],
+//               italics: true,
+//             },
+//           ],
+//         });
+
+//         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     } else if (!isLastColumn && currentHeight + itemHeight > pageHeight) {
+//       // Ajoute la colonne à la page actuelle
+//       currentPage.push({ stack: currentColumn, width: "25%" });
+//       currentColumn = [];
+//       currentHeight = 0;
+
+//       // Si le nombre de colonnes atteint le maximum autorisé
+//       if (currentPage.length === maxColumns) {
+//         // Ajoute une nouvelle page
+//         pages.push({ columns: currentPage, columnGap: 10 });
+//         currentPage = [];
+//       }
+//     }
+
+//     // Ajoute l'élément à la colonne actuelle
+//     currentColumn.push(...itemContent);
+//     currentHeight += itemHeight;
+//   });
+
+//   if (currentColumn.length > 0) {
+//     currentPage.push({ stack: currentColumn, width: "25%" });
+//   }
+
+//   // Ajoute la dernière page si elle contient des colonnes
+//   if (currentPage.length > 0) {
+//     // Ajoute un QR code avec texte à la dernière colonne si c'est la dernière colonne
+//     if (currentPage.length === maxColumns) {
+//       currentPage[maxColumns - 1].stack.push({
+//         columns: [
+//           {
+//             qr: "Text for QR code",
+//             fit: 50,
+//             margin: [0, 0, 0, 0],
+//           },
+//           {
+//             text: "Retrouvez l'agenda complet en ligne",
+//             fontSize: 8,
+//             bold: false,
+//             margin: [-40, 10, 5, 0],
+//             italics: true,
+//           },
+//         ],
+//       });
+//     }
+//     pages.push({ columns: currentPage, columnGap: 10 });
+//   }
+
+//   return pages;
+// }
+
+// ------------------ example with icon fontello ------------------
 
 // function generateColumns() {
 //   const maxColumns = 4;

@@ -12,7 +12,7 @@ fs.readdirSync(fontsDir).forEach(file => {
     vfs[file] = fileData;
 });
 
-const vfsContent = `var pdfMake = pdfMake || {}; pdfMake.vfs = ${JSON.stringify(vfs)};`;
+const vfsContent = `this.pdfMake = this.pdfMake || {}; this.pdfMake.vfs = ${JSON.stringify(vfs)};`;
 fs.writeFileSync(output, vfsContent, 'utf8');
 
 console.log('vfs_fonts.js generated successfully!');

@@ -10,6 +10,15 @@ const fonts = {
       "base64"
     ),
   },
+  Fontello: {
+    normal: Buffer.from(vfsFonts.pdfMake.vfs["fontello.ttf"], "base64"),
+    bold: Buffer.from(vfsFonts.pdfMake.vfs["fontello.ttf"], "base64"),
+    italics: Buffer.from(vfsFonts.pdfMake.vfs["fontello.ttf"], "base64"),
+    bolditalics: Buffer.from(
+      vfsFonts.pdfMake.vfs["fontello.ttf"],
+      "base64"
+    ),
+  }
 };
 
 module.exports = fonts;
