@@ -29,7 +29,7 @@ function generateColumns() {
 
   const contentData = Array.from({ length: 29 }, (v, i) => ({
     decoTitle: decoTitle,
-    day: `LUNDI 15 JUILLET | ${i + 1}`,
+    day: 'LUNDI 15 JUILLET',
     title: `Plage du lac de Montriond ${i + 1}`,
     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
       i + 1
@@ -44,7 +44,7 @@ function generateColumns() {
     ],
     age: [
       { text: userIcon, font: 'Fontello', style: 'iconText' },
-      { text: ' A partir de 3 ans', font: 'Roboto' }
+      { text: '  A partir de 3 ans', font: 'Roboto' }
     ],
     price: [
       { text: euroIcon, font: 'Fontello', style: 'iconText' },
@@ -52,7 +52,7 @@ function generateColumns() {
     ],
     website: [
       { text: globeIcon, font: 'Fontello', style: 'iconText' },
-      { text: ' Reservation en ligne', font: 'Roboto'}
+      { text: '  Reservation en ligne', font: 'Roboto'}
     ],
     // image: imagePath
   }));
@@ -94,7 +94,7 @@ function generateColumns() {
         stack: [
           {
             svg: decoTitle,
-            width: 65,
+            width: 62,
             height: 10,
             margin: [0, 0, 0, 0],
           },
@@ -112,7 +112,7 @@ function generateColumns() {
       { text: item.time, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
       { text: item.price, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
       { text: item.website, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
-        { text: item.age, margin: [0, 0, 0, 12], fontSize: 7, color: "#585f66" },
+        { text: item.age, margin: [0, 0, 0, 14], fontSize: 7, color: "#585f66" },
       
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
@@ -144,8 +144,8 @@ function generateColumns() {
             {
               text: "Retrouvez l'agenda complet en ligne",
               fontSize: 8,
-              bold: false,
-              margin: [-40, 10, 5, 0],
+              bold: true,
+              margin: [-48, 10, 22, 0],
               italics: true,
             },
           ],
@@ -192,8 +192,8 @@ function generateColumns() {
           {
             text: "Retrouvez l'agenda complet en ligne",
             fontSize: 8,
-            bold: false,
-            margin: [-40, 10, 5, 0],
+            bold: true,
+            margin: [-48, 10, 22, 0],
             italics: true,
           },
         ],

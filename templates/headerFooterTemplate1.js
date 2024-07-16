@@ -25,15 +25,15 @@ function header() {
                 stack: [
                   {
                     image: logoPath,
-                    width: 30,
-                    height: 30,
-                    margin: [10, 0, 10, 0],
+                    width: 32,
+                    height: 32,
+                    margin: [10, 3, 10, 0],
                   },
                 ],
               },
               {
                 width: "90%",
-                margin: [10, 10, 0, 0],
+                margin: [7, 10, 0, 0],
                 stack: [
                   {
                     text: `AGENDA`,
@@ -97,7 +97,7 @@ function footer(currentPage, pageCount) {
             text: "Vallée d'Aulps\nTourisme",
             bold: true,
             margin: [10, 12, -10, 0],
-            fontSize: 13,
+            fontSize: 12,
           },
         ],
       },
@@ -111,34 +111,34 @@ function footer(currentPage, pageCount) {
                 stack: [
                   {
                     text: [
-                      { text: "Montriond", bold: true, fontSize: 8 },
+                      { text: "Montriond", bold: true, fontSize: 7 },
                       {
-                        text: "  Ouverture prévue le 24 juin",
+                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h",
                         bold: false,
-                        fontSize: 8,
+                        fontSize: 7,
                       },
-                      { text: "  06 49 48 96 76", bold: true, fontSize: 8 },
+                      { text: "  06 49 48 96 76", bold: true, fontSize: 7 },
                       {
                         text: "  36 route de Morzine, 74110, Montriond",
                         bold: false,
-                        fontSize: 8,
+                        fontSize: 7,
                       },
                     ],
                     margin: [0, 0, 0, 0],
                   },
                   {
                     text: [
-                      { text: "St Jean d’Aulps", bold: true, fontSize: 8 },
+                      { text: "St Jean d’Aulps", bold: true, fontSize: 7 },
                       {
-                        text: "  Du lundi au vendredi, 9h-12h et 13h30-17h30",
+                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h",
                         bold: false,
-                        fontSize: 8,
+                        fontSize: 7,
                       },
-                      { text: "  06 49 48 96 76", bold: true, fontSize: 8 },
+                      { text: "  04 50 79 65 09", bold: true, fontSize: 7 },
                       {
-                        text: "  36 route de Morzine, 74110, Montriond",
+                        text: "  1959 route des Grandes Alpes, 74430,St-Jean-d'Aulps",
                         bold: false,
-                        fontSize: 8,
+                        fontSize: 7,
                       },
                     ],
                     margin: [0, 5, 0, 0],
@@ -146,7 +146,7 @@ function footer(currentPage, pageCount) {
                 ],
                 // Centrer
                 // alignment: "center",
-                margin: [0, 15, 0, 0],
+                margin: [10, 15, 0, 0],
               },
               {
                 width: "15%",
