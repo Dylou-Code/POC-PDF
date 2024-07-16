@@ -9,7 +9,7 @@ const path = require("path");
 
 function generateColumns() {
   const maxColumns = 4;
-  const pageHeight = 490; // Hauteur contenu réel disponible
+  const pageHeight = 475; // Hauteur contenu réel disponible
   const qrCodeHeight = 50; // Hauteur du QR code
   const qrCodeMargin = 10; // Marge pour le QR code
   const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
@@ -21,7 +21,7 @@ function generateColumns() {
 
   const contentData = Array.from({ length: 96 }, (v, i) => ({
     decoTitle: decoTitle,
-    day: `Lundi 15 juillet | ${i + 1}`,
+    day: `LUNDI 15 JUILLET | ${i + 1}`,
     title: `Plage du lac de Montriond ${i + 1}`,
     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
       i + 1
@@ -38,13 +38,12 @@ function generateColumns() {
     // Estimation basique de la hauteur en fonction du nombre de lignes de texte
     const dayHeight = 8;
     const decoTitleHeight = 20;
-    const titleHeight = item.title ? 10 : 0; // hauteur pour le titre
-    const descriptionHeight = 24
-    const imageHeight = item.image ? 32 : 0; // hauteur pour l'image
+    const titleHeight = item.title ? 8 : 0; 
+    const descriptionHeight = item.description ? Math.ceil(item.description.length / 50) * 8 : 0;
+    
     return (
       titleHeight +
       descriptionHeight +
-      imageHeight +
       dayHeight +
       decoTitleHeight +
       20
@@ -61,15 +60,15 @@ function generateColumns() {
             height: 10,
             margin: [0, 0, 0, 0],
           },
-          { text: item.day, margin: [0, -13, 0, 0], fontSize: 8, bold: true },
+          { text: item.day, margin: [0, -13, 0, 0], fontSize: 7, bold: true },
         ],
       },
-      { text: item.title, margin: [0, 3, 0, 2], fontSize: 10, bold: true },
+      { text: item.title, margin: [0, 3, 0, 2], fontSize: 8, bold: true },
       {
         text: item.description,
         margin: [0, 0, 0, 10],
         fontSize: 8,
-        color: "#585f66",
+        color: "#33383D",
       },
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
@@ -94,21 +93,18 @@ function generateColumns() {
         currentPage[maxColumns - 1].stack.push({
           columns: [
             {
-              width: "auto",
               qr: "Text for QR code",
               fit: 50,
-              margin: [0, 0, 0, 5],
+              margin: [0, 0, 0, 10],
             },
             {
-              width: "*",
-              text: {
-                text: "Retrouvez l'agenda complet\n en ligne",
-                bold: false,
-                fontSize: 8,
-              },
+              text: "Retrouvez l'agenda complet en ligne",
+              fontSize: 8,
+              bold: false,
+              margin: [-40, 10, 5, 0],
+              italics: true
             },
           ],
-          columnGap: 5,
         });
 
         // Ajoute la page actuelle aux pages et réinitialise pour une nouvelle page
@@ -152,8 +148,9 @@ function generateColumns() {
           {
             text: "Retrouvez l'agenda complet en ligne",
             fontSize: 8,
-            bold: true,
-            margin: [5, 0, 0, 0],
+            bold: false,
+            margin: [-40, 10, 5, 0],
+            italics: true
           },
         ],
       });

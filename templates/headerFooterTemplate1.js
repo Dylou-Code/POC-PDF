@@ -95,7 +95,7 @@ function footer(currentPage, pageCount) {
           {
             text: "Vallée d'Aulps\nTourisme",
             bold: true,
-            margin: [10, 0, -10, 0],
+            margin: [10, 12, -10, 0],
             fontSize: 13,
           },
         ],
@@ -123,6 +123,7 @@ function footer(currentPage, pageCount) {
                         fontSize: 8,
                       },
                     ],
+                    margin: [0, 0, 0, 0],
                   },
                   {
                     text: [
@@ -144,10 +145,11 @@ function footer(currentPage, pageCount) {
                 ],
                 // Centrer
                 // alignment: "center",
+                margin: [0, 15, 0, 0],
               },
               {
                 width: "15%",
-                margin: [10, 0, 0, 0],
+                margin: [10, 20, 0, 0],
                 stack: [
                   {
                     text: `Page ${currentPage} / ${pageCount}`,
@@ -161,6 +163,7 @@ function footer(currentPage, pageCount) {
         ],
       },
     ],
+    // marge gauche du footer 
     margin: [30, 0],
   };
 }
