@@ -9,8 +9,8 @@ const path = require("path");
 
 function generateColumns() {
   const maxColumns = 4;
-  const pageHeight = 475; // Hauteur contenu réel disponible
-  const qrCodeHeight = 50; // Hauteur du QR code
+  const pageHeight = 520; // Hauteur contenu réel disponible
+  const qrCodeHeight = 60; // Hauteur du QR code
   const qrCodeMargin = 10; // Marge pour le QR code
   const reservedHeightForQrCode = qrCodeHeight + qrCodeMargin;
   const phoneIcon = "\ue802";
@@ -27,7 +27,7 @@ function generateColumns() {
    <rect width="169" height="10" fill="#EEF1F5"/>
     </svg>`;
 
-  const contentData = Array.from({ length: 96 }, (v, i) => ({
+  const contentData = Array.from({ length: 29 }, (v, i) => ({
     decoTitle: decoTitle,
     day: `LUNDI 15 JUILLET | ${i + 1}`,
     title: `Plage du lac de Montriond ${i + 1}`,
@@ -42,9 +42,13 @@ function generateColumns() {
       { text: scheduleIcon, font: 'Fontello', style: 'iconText' },
       { text: ' 10h00 - 12h00', font: 'Roboto' }
     ],
+    age: [
+      { text: userIcon, font: 'Fontello', style: 'iconText' },
+      { text: ' A partir de 3 ans', font: 'Roboto' }
+    ],
     price: [
       { text: euroIcon, font: 'Fontello', style: 'iconText' },
-      { text: ' Tarif unique : 10 €. Gratuit pour les moins de 10 ans.', font: 'Roboto' },
+      { text: '  Gratuit pour les moins de 26 ans', font: 'Roboto' },
     ],
     website: [
       { text: globeIcon, font: 'Fontello', style: 'iconText' },
@@ -64,12 +68,11 @@ function generateColumns() {
     const decoTitleHeight = 20;
     const titleHeight = item.title ? 8 : 0;
     const locationHeight = item.location ? 6 : 0;
-    const timeHeight = item.time ? 6 : 0;
-    const priceHeight = item.price ? 6 : 0;
-    const websiteHeight = item.price ? 6 : 0;
-    const descriptionHeight = item.description
-      ? Math.ceil(item.description.length / 50) * 8
-      : 0;
+    const timeHeight = item.time ? 8 : 0;
+    const priceHeight = item.price ? 8 : 0;
+    const websiteHeight = item.price ? 8 : 0;
+    const ageHeight = item.price ? 8 : 0;
+    const descriptionHeight = 24;
 
     return (
       titleHeight +
@@ -80,6 +83,7 @@ function generateColumns() {
       timeHeight +
       priceHeight +
       websiteHeight +
+      ageHeight +
       20
     ); // ajustement pour les marges
   };
@@ -104,10 +108,11 @@ function generateColumns() {
         fontSize: 8,
         color: "#33383D",
       },
-      { text: item.location, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
-      { text: item.time, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
-      { text: item.price, margin: [0, 0, 0, 0], fontSize: 8, color: "#585f66" },
-      { text: item.website, margin: [0, 0, 0, 10], fontSize: 8, color: "#585f66" },
+      { text: item.location, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
+      { text: item.time, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
+      { text: item.price, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
+      { text: item.website, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
+        { text: item.age, margin: [0, 0, 0, 12], fontSize: 7, color: "#585f66" },
       
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
