@@ -88,6 +88,10 @@ function header() {
 
 
 function footer(currentPage, pageCount) {
+  const phoneIcon = "\ue802";
+  const scheduleIcon = "\ue803";
+  const markerIcon = "\ue805";
+  
   return {
     columns: [
       {
@@ -111,13 +115,16 @@ function footer(currentPage, pageCount) {
                 stack: [
                   {
                     text: [
-                      { text: "Montriond", bold: true, fontSize: 7 },
+                      { text: "Montriond    ", bold: true, fontSize: 7 },
+                      { text: scheduleIcon, font: 'Fontello', style: 'iconText', color: "#585f66"},
                       {
-                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h",
+                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h   ",
                         bold: false,
                         fontSize: 7,
                       },
-                      { text: "  06 49 48 96 76", bold: true, fontSize: 7 },
+                      { text: phoneIcon, font: 'Fontello', style: 'iconText', color: "#585f66" },
+                      { text: "  06 49 48 96 76   ", bold: true, fontSize: 7 },
+                      { text: markerIcon, font: 'Fontello', style: 'iconText', color: "#585f66" },
                       {
                         text: "  36 route de Morzine, 74110, Montriond",
                         bold: false,
@@ -128,13 +135,16 @@ function footer(currentPage, pageCount) {
                   },
                   {
                     text: [
-                      { text: "St Jean d’Aulps", bold: true, fontSize: 7 },
+                      { text: "St Jean d’Aulps    ", bold: true, fontSize: 7 },
+                      { text: scheduleIcon, font: 'Fontello', style: 'iconText', color: "#585f66"},
                       {
-                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h",
+                        text: "  Ouvert tous les jours de 9h-12h30 et 14h30-18h  ",
                         bold: false,
                         fontSize: 7,
                       },
-                      { text: "  04 50 79 65 09", bold: true, fontSize: 7 },
+                      { text: phoneIcon, font: 'Fontello', style: 'iconText', color: "#585f66" },
+                      { text: " 04 50 79 65 09   ", bold: true, fontSize: 7 },
+                      { text: markerIcon, font: 'Fontello', style: 'iconText', color: "#585f66" },
                       {
                         text: "  1959 route des Grandes Alpes, 74430,St-Jean-d'Aulps",
                         bold: false,
