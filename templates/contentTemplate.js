@@ -1,11 +1,372 @@
 const path = require("path");
 
-/**
- *
- * @returns {Array} - Tableau de pages contenant les colonnes
- */
-
 //const path = require("path");
+
+function concatenerTextes() {
+  let texteConcatene = [];
+  const phoneIcon = "\ue802";
+  const markerIcon = "\ue805";
+  const timeIcon = "\ue800";
+  const scheduleIcon = "\ue803";
+  const euroIcon = "\uf153";
+  const globeIcon = "\ue801";
+  const userIcon = "\ue804";
+  const iconTitle = "\ue803";
+  // const elements = [
+  //   { text: markerIcon, font: "Fontello", style: "iconText" },
+  //   {
+  //     text: " Domaine de Découverte de la Vallée d'Aulps",
+  //     font: "Roboto",
+  //   },
+  //   [
+  //     { text: scheduleIcon, font: "Fontello", style: "iconText" },
+  //     { text: " 10h00 - 12h00", font: "Roboto", fontSize: 7, color: "#585f66" },
+  //   ],
+  //   [
+  //     { text: userIcon, font: "Fontello", style: "iconText" },
+  //     {
+  //       text: "  A partir de 3 ans",
+  //       font: "Roboto",
+  //       fontSize: 7,
+  //       color: "#585f66",
+  //     },
+  //   ],
+  //   { text: euroIcon, font: "Fontello", style: "iconText" },
+  //   {
+  //     text: "  Gratuit pour les moins de 26 ans",
+  //     font: "Roboto",
+  //     fontSize: 7,
+  //     color: "#585f66",
+  //   },
+  // ];
+  const elements = [
+    [
+      { text: markerIcon, font: "Fontello", style: "iconText" },
+      {
+        text: " Domaine de Découverte de la Vallée d'Aulps",
+        font: "Roboto",
+      },
+    ],
+
+    [
+      { text: scheduleIcon, font: "Fontello", style: "iconText" },
+      {
+        text: " 10h00 - 12h00",
+        font: "Roboto",
+        fontSize: 7,
+        color: "#585f66",
+      },
+    ],
+    [
+      { text: userIcon, font: "Fontello", style: "iconText" },
+      {
+        text: "  A partir de 3 ans",
+        font: "Roboto",
+        fontSize: 7,
+        color: "#585f66",
+      },
+    ],
+    [
+      { text: euroIcon, font: "Fontello", style: "iconText" },
+      {
+        text: "  Gratuit pour les moins de 26 ans",
+        font: "Roboto",
+        fontSize: 7,
+        color: "#585f66",
+      },
+    ],
+  ];
+
+  elements.forEach((element) => {
+    if (Array.isArray(element)) {
+      element.forEach((item) => {
+        // texteConcatene.push({
+        //   text: item.text + " ",
+        //   fontSize: item.fontSize || 8,
+        //   bold: true,
+        //   margin: [0, 3, 0, 2],
+        //   style: item.style,
+        //   color: item.color,
+        // });
+        texteConcatene += item.text + " ";
+      });
+    } else {
+      texteConcatene += element.text + " ";
+    }
+  });
+
+  return texteConcatene;
+}
+
+function test() {
+  const phoneIcon = "\ue802";
+  const markerIcon = "\ue805";
+  const timeIcon = "\ue800";
+  const scheduleIcon = "\ue803";
+  const euroIcon = "\uf153";
+  const globeIcon = "\ue801";
+  const userIcon = "\ue804";
+  const iconTitle = "\ue803";
+
+  return [
+    {
+      columns: [
+        {
+          width: "25%",
+          stack: [
+            // Day 
+            [
+              {
+                svg: `<svg width="169" height="10" viewBox="0 0 169 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="169" height="10" fill="#EEF1F5"/>
+                </svg>`,
+                width: 62,
+                height: 10,
+                margin: [0, 0, 0, 0]
+              },
+              
+              { text: "Mercredi 24 JUILLET", margin: [0, -13, 0, 0], fontSize: 7, bold: true }
+            ],
+            
+            [
+              // space separator
+              {
+                text: "  ",
+                font: "Roboto",
+                fontSize: 4
+              }
+            ],
+           
+            // Event 1
+            [
+
+              // Event 1 - bloc 1 : titre + description
+              [
+                {
+                  text: "Visite d'une conserverie artisanale",
+                  fontSize: 8,
+                  bold: true,
+                },
+                {
+                  text: "Venez découvrir la toute dernière conserverie artisanale de montagne ! Un savoir-faire authentique remis aux goûts du jour.",
+                 
+                  fontSize: 8,
+                  color: "#33383D",
+                },
+              ],
+              //  Event 1 - bloc 2:  organisateur
+              [
+                {
+                  text: "Organisé par : Les Délices d'Alpage ",
+                  fontSize: 7,
+                  color: "#585f66",
+                },
+              ],
+              // Event 1 - bloc 3:  lieu + horaire + age + prix
+              {
+                text: [
+                  { text: "\ue805", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "Domaine de Découverte de la Vallée d'Aulps",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+
+                  { text: "\ue803", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "10h00 - 12h00",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  { text: "\uf153", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "A partir de 3 ans",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+
+                  { text: euroIcon, font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "Gratuit pour les moins de 26 ans",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  }
+                ]
+              }
+            ],
+
+            // Event Separator (ajouter entre chaque event)
+            {
+              text: " ",
+              fontSize: 4
+            },
+           
+
+            // Event 2
+            [
+              // Event 2 - bloc 1 : titre + description
+              [
+                {
+                  text: "Visite d'une conserverie artisanale",
+                  margin: [0, 0, 0, 0],
+                  fontSize: 8,
+                  bold: true,
+                },
+                {
+                  text: "Venez découvrir la toute dernière conserverie artisanale de montagne ! Un savoir-faire authentique remis aux goûts du jour.",
+                  margin: [0, 0, 0, 3],
+                  fontSize: 8,
+                  color: "#33383D",
+                },
+
+              ],
+              //  Event 2 - bloc 2:  organisateur
+              [
+                {
+                  text: "Organisé par : Les Délices d'Alpage ",
+                  margin: [0, 3, 0, 2],
+                  fontSize: 7,
+                  color: "#585f66",
+                },
+              ],
+              // Event 2 - bloc 3:  lieu + horaire + age + prix
+              {
+                text: [
+                  { text: "\ue805", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "Domaine de Découverte de la Vallée d'Aulps",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+
+                  { text: "\ue803", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "10h00 - 12h00",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  { text: "\uf153", font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "A partir de 3 ans",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  },
+
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+
+                  { text: euroIcon, font: "Fontello", style: "iconText" },
+                  // space separator
+                  {
+                    text: "  ",
+                    font: "Roboto",
+                    fontSize: 7
+                  },
+                  {
+                    text: "Gratuit pour les moins de 26 ans",
+                    font: "Roboto",
+                    fontSize: 7,
+                    color: "#585f66",
+                  }
+                ]
+              }
+            ]
+
+          ]
+        },
+      ],
+      columnGap: 20,
+    },
+  ];
+}
+
+module.exports = test;
 
 function generateColumns() {
   const maxColumns = 4;
@@ -29,30 +390,30 @@ function generateColumns() {
 
   const contentData = Array.from({ length: 29 }, (v, i) => ({
     decoTitle: decoTitle,
-    day: 'LUNDI 15 JUILLET',
+    day: "LUNDI 15 JUILLET",
     title: `Plage du lac de Montriond ${i + 1}`,
     description: `Le lac de Montriond se situe dans un cadre grandiose, Le lac de Montriond se situe dans un cadre grandiose ${
       i + 1
     }`,
     location: [
-      { text: markerIcon, font: 'Fontello', style: 'iconText' },
-      { text: ' Domaine de Découverte de la Vallée d\'Aulps', font: 'Roboto' }
+      { text: markerIcon, font: "Fontello", style: "iconText" },
+      { text: " Domaine de Découverte de la Vallée d'Aulps", font: "Roboto" },
     ],
     time: [
-      { text: scheduleIcon, font: 'Fontello', style: 'iconText' },
-      { text: ' 10h00 - 12h00', font: 'Roboto' }
+      { text: scheduleIcon, font: "Fontello", style: "iconText" },
+      { text: " 10h00 - 12h00", font: "Roboto" },
     ],
     age: [
-      { text: userIcon, font: 'Fontello', style: 'iconText' },
-      { text: '  A partir de 3 ans', font: 'Roboto' }
+      { text: userIcon, font: "Fontello", style: "iconText" },
+      { text: "  A partir de 3 ans", font: "Roboto" },
     ],
     price: [
-      { text: euroIcon, font: 'Fontello', style: 'iconText' },
-      { text: '  Gratuit pour les moins de 26 ans', font: 'Roboto' },
+      { text: euroIcon, font: "Fontello", style: "iconText" },
+      { text: "  Gratuit pour les moins de 26 ans", font: "Roboto" },
     ],
     website: [
-      { text: globeIcon, font: 'Fontello', style: 'iconText' },
-      { text: '  Reservation en ligne', font: 'Roboto'}
+      { text: globeIcon, font: "Fontello", style: "iconText" },
+      { text: "  Reservation en ligne", font: "Roboto" },
     ],
     // image: imagePath
   }));
@@ -63,7 +424,7 @@ function generateColumns() {
   let currentHeight = 0;
 
   const measureHeight = (item) => {
-    // Estimation basique de la hauteur en fonction du nombre de lignes de texte
+    // Hauteur de chaque élément
     const dayHeight = 8;
     const decoTitleHeight = 20;
     const titleHeight = item.title ? 8 : 0;
@@ -85,7 +446,7 @@ function generateColumns() {
       websiteHeight +
       ageHeight +
       20
-    ); // ajustement pour les marges
+    ); // ajout d'un marge a cause d'un léger décalage
   };
 
   contentData.forEach((item, index) => {
@@ -98,6 +459,7 @@ function generateColumns() {
             height: 10,
             margin: [0, 0, 0, 0],
           },
+          //
           { text: item.day, margin: [0, -13, 0, 0], fontSize: 7, bold: true },
         ],
       },
@@ -108,12 +470,22 @@ function generateColumns() {
         fontSize: 8,
         color: "#33383D",
       },
-      { text: item.location, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
+      {
+        text: item.location,
+        margin: [0, 0, 0, 0],
+        fontSize: 7,
+        color: "#585f66",
+      },
       { text: item.time, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
       { text: item.price, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
-      { text: item.website, margin: [0, 0, 0, 0], fontSize: 7, color: "#585f66" },
-        { text: item.age, margin: [0, 0, 0, 14], fontSize: 7, color: "#585f66" },
-      
+      {
+        text: item.website,
+        margin: [0, 0, 0, 0],
+        fontSize: 7,
+        color: "#585f66",
+      },
+      { text: item.age, margin: [0, 0, 0, 14], fontSize: 7, color: "#585f66" },
+
       // { image: item.image, width: 50, height: 32, margin: [0, 0, 0, 5] },
     ];
 
@@ -121,7 +493,6 @@ function generateColumns() {
 
     const isLastColumn = currentPage.length === maxColumns - 1;
 
-    // Vérifiez si l'élément peut être ajouté à la dernière colonne avec l'espace réservé pour le QR code
     if (
       isLastColumn &&
       currentHeight + itemHeight > pageHeight - reservedHeightForQrCode
@@ -617,7 +988,7 @@ function generateColumns() {
 //   return pages;
 // }
 
-module.exports = generateColumns;
+//module.exports = generateColumns;
 
 // ----------Work V2 ------------
 // function generateColumns() {

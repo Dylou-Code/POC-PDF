@@ -12,12 +12,26 @@ Hauteur colonne max : 475
 
 ## Optimisation & Amelioration 
 
-### Amélioration 
+Problématique remplissage colonnes :
+- probleme de taille des item fixes (impossible de gérer du contenu dynamiques)
+- On peut ajouter 4 evenements par colonne avec leur taille maximum(titre, desc,picto,marges)
+- Dernier colonne doit avoir le QR Code
+- Remplissage par item ce qui empêche de couper un event
+
+Solution remplissage des colonnes : 
+
+- fonction qui prends les events en entrée et calcule la taille globale qui peut rentrer 
+- 
+
+
+
+
+
 
 Avoir un tableau des evenements que l'on passe à la fonction de calcul des item
 
 Optimisation de la gestion des icônes : Plutôt que de déclarer chaque icône comme une constante,
- envisagez de les stocker dans un objet ou un map pour un accès plus facile et pour réduire la répétition du code.
+envisagez de les stocker dans un objet ou un map pour un accès plus facile et pour réduire la répétition du code.
 
 
 Réduction de la redondance dans contentData : Le code répète "Fontello" et "Roboto" pour chaque élément. 

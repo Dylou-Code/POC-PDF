@@ -5,7 +5,7 @@ const contentTemplate = require("./templates/contentTemplate");
 const headerFooterTemplate1 = require("./templates/headerFooterTemplate1");
 const headerFooterTemplate2 = require("./templates/headerFooterTemplate2");
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(express.static(path.join(__dirname, "public")));
 
