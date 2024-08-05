@@ -366,7 +366,7 @@ function test() {
   ];
 }
 
-module.exports = test;
+
 
 function generateColumns() {
   const maxColumns = 4;
@@ -575,7 +575,7 @@ function generateColumns() {
 
   return pages;
 }
-
+module.exports = generateColumns;
 // ------------------ example with icon fontello ------------------
 // function generateColumns() {
 //   const maxColumns = 4;
